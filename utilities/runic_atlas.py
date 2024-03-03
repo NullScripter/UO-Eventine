@@ -2,7 +2,9 @@ __author__ = "NullScripter"
 __version__ = "0.9.0" 
 
 # TODOs:
-# 1) test other spells. Only tested with 'Sacred Journey' (default option)
+# 1) test other spells. Only tested with 'Sacred Journey' (default option).
+# 2) attemptDelay between cast set to 2 sec as the default (works well with Faster Casting 2 / Cast Recover 3)
+#    but might be lowered at max casting speed/recovery - need testing.
 
 runicAtlasSpellOptions = {
     'Recall (Spell)': 4,
