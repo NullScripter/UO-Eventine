@@ -1,2 +1,2 @@
 # UO-Eventine
-Ultima Online Scripts for Eventine shard
+My scripts for Ultima Online Eventine shard.
