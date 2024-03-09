@@ -9,7 +9,7 @@ setX = 260
 setY = 1180 
 maxRows = 5
 atlasSerialID = Misc.ReadSharedValue('mainRunicAtlas')
-if atlasSerialID == None:
+if atlasSerialID == 0:
     atlasSerialID = Target.PromptTarget( 'Select Runic Atlas')
 
 
