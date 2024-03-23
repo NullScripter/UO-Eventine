@@ -1,6 +1,6 @@
 __version__ = "1.0.0" 
 
-# Zodiac Aries (Mar 21 - April 22)
+# Zodiac Aries (Mar 21 - April 19)
 #
 # Script to "harvest" narby animals for Aries quest. 
 # Automatically sheer nearby sheeps and attack nearby bears and deers.
@@ -10,7 +10,8 @@ __version__ = "1.0.0"
 # 2) It tries to patchfind to the animal. 
 #   (Simple but imperfect patchfinding, but it will not freeze or hinder manual movement)
 # 3) It stops for ~2s after killing a bear/deer before going to the next animal (if one is nearby)
-#   (I use a melee weapon, so it gives me time 
+#   (I use a melee weapon, so it gives me time kill and autolooter to loot the Fat)
+
 
 
 # CRAFTING NOTES:
