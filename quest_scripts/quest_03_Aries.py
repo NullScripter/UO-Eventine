@@ -1,4 +1,4 @@
-__version__ = "1.0.0" 
+__version__ = "1.2.0" 
 
 # Zodiac Aries (Mar 21 - April 19)
 #
@@ -13,22 +13,25 @@ __version__ = "1.0.0"
 #   (I use a melee weapon, so it gives me time kill and autolooter to loot the Fat)
 
 
+# SCRIPT CONFIG
+MODES = {
+    'HarvestNearbyAnimals', # Quest Steps 1-3 
+    'MakeFineWool',         # Quest Steps 6-10
+    'MakeFineBolt',         # Quest Steps 11
+}
+MODE = 'HarvestNearbyAnimals'
 
-# CRAFTING NOTES:
-# 
-# Quest-specific Crafting Stations:
-# 1) Craft 1x 'Wool Washing Station': Carpentry > Tailoring & Cooking > (page 2)
-# 2) Craft 1x 'Scouring Through': Carpentry > Tailoring & Cooking > (page 3)
-# 3) Craft 1x 'Wool Roller': Carpentry > Other > (page 4)
 
-# Tools:
-# 1) Craft ?x 'Sheep Shearing Scissors': Tinkering > Tools > (page 6)
-
-# Quest item:  
+# QUEST STEPS:
+# * Craft 1x 'Wool Washing Station': Carpentry > Tailoring & Cooking > (page 2)
+# * Craft 1x 'Scouring Through': Carpentry > Tailoring & Cooking > (page 3)
+# * Craft 1x 'Wool Roller': Carpentry > Other > (page 4)
+# * Craft ?x 'Sheep Shearing Scissors': Tinkering > Tools > (page 6)
+#
 # 1) Sheer 300 sheeps to get 300x'Fresh Fleece'
 # 2) Kill deers until 300x'Deer Fat'
 # 3) Kill bears until 300x'Bear Fat'   
- 
+#
 # 4) Craft 300 x 'potash': Alchemy > Ingredients > (page 1)
 # 5) Craft 300 x 'detergent': Alchemy > Ingredients > (page 1)
 # 6) Use 'Wool Washing Station' (to convert 'Fresh Fleece' into 'Washed Fleece')
@@ -40,9 +43,11 @@ __version__ = "1.0.0"
 # 12) Craft 100x 'Woolly Jumper': Tailoring > Shirts and Pants > (page 5)
 
 
+
+#### Animal Harvesting Scripts ###
+
 from System.Collections.Generic import List
 from System import Int32
-
 
 sheeps = [0x00CF]
 bears = [0x00D3, 0x00D4, 0x00D5, 0x00A7]
@@ -57,8 +62,13 @@ def FindRelevantAnimal():
     animalFilter.RangeMax = 22
     animalFilter.IsHuman = 0
     animalFilter.IsGhost = 0
-
     mobiles = Mobiles.ApplyFilter( animalFilter )
+    
+    # Aggro all bears and deers and return nearest animal
+    for m in mobiles:
+        if 'bear' in m.Name or m.Name in {'a great hart', 'a hind'}:  
+            Player.Attack(m)      
+            Misc.Pause(50)
     return Mobiles.Select(mobiles, 'Nearest') if len(mobiles)>0 else None
         
     
@@ -69,7 +79,8 @@ def WalkDirection( direction ):
     Player.Walk( direction )
     
     
-def WalkToMobile( mobile, maxDistanceToMobile = 1, startPlayerStuckTimer = False ):   
+def WalkToMobile( mobile, maxDistanceToMobile = 1, startPlayerStuckTimer = False ): 
+    Mobiles.Message(mobile,(Player.DistanceTo( mobile ) * 10) % 255,'meep!',False)
     mobilePosition = mobile.Position
     playerPosition = Player.Position
     directionToWalk = ''
@@ -134,5 +145,72 @@ def HarvestNearbyAnimals():
     Misc.Pause(500)
 
     
+#### Crafring Scripts ###
+    
+def MakeFineWool():
+    # (Quest steps 6 to 10) Use all crafting stations in order. 
+    # From 'Fresh Fleece' to 'Ball of Fine Wool' 
+    # Using stations at Numem`s house [TODO: update Serials or use ItemFilter to locate]
+    
+    Items.UseItem(0x40490B88) # Rinsing Trough Serial
+    detergent = Items.FindByID(0xA3E8,-1,Player.Backpack.Serial,1,True)
+    Items.UseItem(detergent)
+    Target.WaitForTarget(1000, False)
+    Target.TargetExecute(0x40490C91) # Scouring Rrough water Serial
+    Items.UseItem(0x40490C88) # Scouring Rrough Serial
+    Items.UseItem(0x40490BD4) # Wool roller Serial
+    rolledWool = Items.FindByID(0xACF8,0,Player.Backpack.Serial,1,True)
+    Items.UseItem(rolledWool)
+    Target.WaitForTarget(1000, False)
+    Target.TargetExecute(0x408E1B86)
+    Misc.Pause(5500)
+
+    
+def FindLoom():
+    filter = Items.Filter()
+    filter.RangeMax = 3
+    filter.Name = 'upright loom'
+    items = Items.ApplyFilter(filter)
+    return items[0]
+        
+    
+def MakeFineBolt():
+    # (Quest step 11) 'Bolt of Fine Wool' using Colored Loom 
+    # Using loom coordinates at Numem`s house [TODO: update (852, 1152 ,32 ,1231) floor position]
+    # Retriving and re-placing the loom at every bolt (Colored Loom bug)
+    
+    # Retrive Loom
+    hatchet = Items.FindByID(0x0F43,0,Player.Backpack.Serial,1,True)
+    Items.UseItem(hatchet)
+    Target.WaitForTarget(1000, False)
+    Target.TargetExecute(FindLoom())
+    Misc.Pause(500)
+    
+    # Put Loom back on the floor
+    loomDeed = Items.FindByName('Colored Loom (east)',-1,Player.Backpack.Serial,1,True) 
+    Items.UseItem(loomDeed)
+    Target.WaitForTarget(1000, False)
+    Target.TargetExecute(852, 1152 ,32 ,1231) # Coordinate (Static)
+    Misc.Pause(500)
+    
+    
+    # Create Bolt
+    for i in range(3):
+        ballWool = Items.FindByID(0x0E1D,0x0436,Player.Backpack.Serial,1,True)
+        Items.UseItem(ballWool)
+        Target.WaitForTarget(1000, False)
+        Target.TargetExecute(FindLoom())
+        
+    Misc.Pause(1000)
+    
+    
+#### Loop ###    
 while True:
-    HarvestNearbyAnimals()
+    if MODE not in MODES: break
+    
+    if MODE == 'HarvestNearbyAnimals':
+        HarvestNearbyAnimals()
+    elif MODE == 'MakeFineWool':
+        MakeFineWool()
+    elif MODE == 'MakeFineBolt':
+        MakeFineBolt()
