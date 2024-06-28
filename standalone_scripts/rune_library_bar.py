@@ -60,7 +60,7 @@ class RunicAtlas:
             Gumps.WaitForGump(878763590, 1000)
             
 
-    def teleportToRuneName(self, runename, maxAttempts=2, attemptDelay=500):
+    def teleportToRuneName(self, runename, maxAttempts=MAX_TRIES, attemptDelay=500):
         if POOF_BAAL: Items.UseItem(POOF_BAAL)
         px,py = Player.Position.X, Player.Position.Y
         for i in range(0, maxAttempts):           
@@ -76,7 +76,7 @@ class RunicAtlas:
         Gumps.CloseGump(878763590) 
 
 
-    def teleportToRuneIndex(self, runeIndex, maxAttempts=2, attemptDelay=500):
+    def teleportToRuneIndex(self, runeIndex, maxAttempts=MAX_TRIES, attemptDelay=500):
         if POOF_BAAL: Items.UseItem(POOF_BAAL)
         px,py = Player.Position.X, Player.Position.Y
         for i in range(0, maxAttempts):
