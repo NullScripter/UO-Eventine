@@ -1,5 +1,5 @@
 __author__ = "NullScript"
-__version__ = "1.3.0" 
+__version__ = "1.3.1" 
 
 
 ###### Personal Settings (change them to yours) ######
@@ -14,11 +14,11 @@ POOF_BAAL = None # (Optional) Put a Puffball Serial here
 
 POSITION_X = 150 # Gump position 
 POSITION_Y = 1158 # Gump position 
-ROWS = 6 # Number of rune per rows 
+ROWS = 6 # Number of rune per column 
 
 
 TRAVEL_METHOD = 'Sacred Journey'
-MAX_TRIES = 2 # In recall/sacred journey fail
+MAX_TRIES = 2 # If recall/sacred journey fails
 
 
 ###### Script ######
