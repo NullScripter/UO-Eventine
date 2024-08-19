@@ -8,7 +8,7 @@ import time
 ## Personal Settings ##
 RE_PATH = r"D:\Games\UO Eventine\Eventine Setup\ClassicUO\Data\Plugins\RazorEnhanced-0.8.2.115\RazorEnhanced.exe"
 SHOW_RE_LAUNCHER = False # Set to true if not skipping RE Launch window (RE > General > Show Launch Window)
-RESTART_CLIENT = 12000 # 20 minutes 
+RESTART_CLIENT = 1200 # 20 minutes 
 
 '''
 NOTES:
