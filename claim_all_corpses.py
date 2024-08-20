@@ -11,7 +11,6 @@ def ClaimAllCorpses():
     corpseFilter.IsCorpse = True
     corpseFilter.OnGround = True
     corpseFilter.Movable = False
-    corpseFilter.RangeMin = -1
     corpseFilter.RangeMax = 8
     corpses = Items.ApplyFilter(corpseFilter)
     corpses = [c for c in corpses if c.ItemID not in IGNORE_LIST]
